@@ -1,0 +1,22 @@
+{
+  "name": "mb-jss",
+  "version": "1.0",
+  "homepage": "https://github.com/minhbang/mb-jss",
+  "authors": [
+    "Minh Bằng <contact@minhbang.com>"
+  ],
+  "description": "Javascript collection",
+  "main": "readme.md",
+  "keywords": [
+    "minhbang",
+    "js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
