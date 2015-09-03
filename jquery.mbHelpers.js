@@ -9,7 +9,7 @@
                 text: message,
                 buttons: {sticker: false},
                 animate_speed: "fast",
-                delay: 4000000
+                delay: 4000
             };
             options = $.extend(defaults, options);
             if (type !== 'warning') {
