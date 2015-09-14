@@ -9,7 +9,7 @@
 				container: 'body',
 				placement: 'left',
 				title: 'Quick Update',
-				element: '<input class="form-control" type="text" value="" name="value">',
+				element: '<input class="form-control" type="text" value="" name="_value">',
 				elementClass: null,
 				updateSuccess: null,
 				afterShow: null
@@ -19,7 +19,7 @@
 				options.element = options.element.replace('class="', 'class="' + options.elementClass + ' ');
 			}
 			var formHtml = '<form class="form-inline form-quick-update form-update-' + options.attribute + '">' +
-				'<input type="hidden" value="' + options.attribute + '" name="name">' +
+				'<input type="hidden" value="' + options.attribute + '" name="_name">' +
 				'<div class="form-group">' +
 				options.element +
 				'<button class="btn btn-success btn-update-' + options.attribute + '-ok" type="button"><span class="glyphicon glyphicon-ok"></span></button>' +
