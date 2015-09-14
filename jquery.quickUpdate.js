@@ -50,7 +50,7 @@
 					$(this).popover('show');
 					popover = $(this);
 					var form = container.find('.popover-content form');
-					form.find('[name="value"]').val($(this).text().trim());
+					form.find('[name="_value"]').val($(this).text().trim());
 					form.on('click', '.btn-update-' + options.attribute + '-cancel', function () {
 						hidePopover();
 					});
