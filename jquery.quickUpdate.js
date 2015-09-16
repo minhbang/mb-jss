@@ -12,7 +12,7 @@
                 title: 'Quick Update',
                 attribute: 'attribute',
                 element: '<input class="form-control" type="text" value="" name="_value">',
-                elementClass: null,
+                class: null,
                 dataTable: null,
                 updateSuccess: function (data, oTable) {
                     if (data.type == 'success' && oTable) {
@@ -23,8 +23,10 @@
                 afterShow: null
             };
             options = $.extend(defaults, options);
-            if (options.elementClass) {
-                options.element = options.element.replace('class="', 'class="' + options.elementClass + ' ');
+
+            var elementClass = $(this).data('qu_class') || options.class;
+            if (elementClass) {
+                options.element = options.element.replace('class="', 'class="' + elementClass + ' ');
             }
 
             function formHtml(attribute) {
@@ -59,30 +61,33 @@
                     content: formHtml(attribute)
                 }).click(function (e) {
                     e.preventDefault();
+                    var old_val = $(this).text().trim();
                     hidePopover();
                     $(this).popover('show');
                     popover = $(this);
                     var form = container.find('.popover-content form');
-                    form.find('[name="_value"]').val($(this).text().trim());
+                    form.find('[name="_value"]').val(old_val);
                     form.on('click', '.btn-update-' + attribute + '-cancel', function () {
                         hidePopover();
                     });
-
-                    var url = popover.attr('href');
-                    if (options.url) {
-                        url = options.url.replace('__ID__', url.replace('#', ''));
-                    }
-
                     form.on('click', '.btn-update-' + attribute + '-ok', function () {
-                        var params = container.find('.popover-content form').serialize();
-                        $.post(url + '?' + params, {
-                            _token: window.csrf_token
-                        }, function (data) {
-                            hidePopover();
-                            if (options.updateSuccess) {
-                                options.updateSuccess(data, options.dataTable);
+                        if (form.find('[name="_value"]').val() != old_val) {
+                            var url = popover.attr('href');
+                            if (options.url) {
+                                url = options.url.replace('__ID__', url.replace('#', ''));
                             }
-                        }, 'json');
+                            var params = container.find('.popover-content form').serialize();
+                            $.post(url + '?' + params, {
+                                _token: window.csrf_token
+                            }, function (data) {
+                                hidePopover();
+                                if (options.updateSuccess) {
+                                    options.updateSuccess(data, options.dataTable);
+                                }
+                            }, 'json');
+                        } else {
+                            hidePopover();
+                        }
                     });
                     if (options.afterShow) {
                         options.afterShow(form);
