@@ -24,16 +24,15 @@
             };
             options = $.extend(defaults, options);
 
-            var elementClass = $(this).data('qu_class') || options.class;
-            if (elementClass) {
-                options.element = options.element.replace('class="', 'class="' + elementClass + ' ');
-            }
-
-            function formHtml(attribute) {
+            function formHtml(attribute, elementClass) {
+                var element = options.element;
+                if (elementClass) {
+                    element = element.replace('class="', 'class="' + elementClass + ' ');
+                }
                 return '<form class="form-inline form-quick-update form-update-' + attribute + '">' +
                     '<input type="hidden" value="' + attribute + '" name="_attr">' +
                     '<div class="form-group">' +
-                    options.element +
+                    element +
                     '<button class="btn btn-success btn-update-' + attribute + '-ok" type="button"><span class="glyphicon glyphicon-ok"></span></button>' +
                     '<button class="btn btn-white btn-update-' + attribute + '-cancel" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
                     '</div>' +
@@ -52,13 +51,14 @@
 
             return this.each(function () {
                 var attribute = $(this).data('qu_attr') || options.attribute;
+
                 $(this).popover({
                     container: options.container,
                     placement: $(this).data('qu_placement') || options.placement,
                     trigger: 'manual',
                     html: true,
                     title: $(this).data('qu_title') || options.title,
-                    content: formHtml(attribute)
+                    content: formHtml(attribute, $(this).data('qu_class') || options.class)
                 }).click(function (e) {
                     e.preventDefault();
                     var old_val = $(this).text().trim();
