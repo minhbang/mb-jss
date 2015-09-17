@@ -100,6 +100,7 @@
             toggleLoading(that);
             $.get(this.options.url.data, function (data) {
                 that.dd.html(data.html);
+                that.dd.nestable('reinit');
                 if (that.afterReload) {
                     that.afterReload(data);
                 }
