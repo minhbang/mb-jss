@@ -74,9 +74,7 @@ $.fn.froala_editor = $.fn.editable.noConflict();
             countCharacters: false,
             imageUploadParam: 'image',
             defaultImageWidth: 600,
-            trans: {
-                image_used: 'Hình ảnh này không xóa trên server, do còn được sử dụng trong nội dung'
-            }
+            imageDeleteConfirmation: false
         };
 
     function MbEditor(element, options) {
@@ -95,11 +93,14 @@ $.fn.froala_editor = $.fn.editable.noConflict();
 
     MbEditor.prototype = {
         init: function () {
-            var _this = this,
-                _element = this.element;
+            var _element = this.element;
             _element.froala_editor(this.options)
                 .on('editable.imageError', function (e, editor, error) {
                     $.fn.mbHelpers.showMessage('error', error.message);
+                })
+                .on('editable.imageAltSet', function (e, editor, img) {
+                    var alt = img.attr('alt');
+                    console.log(alt);
                 })
                 .on('editable.afterRemoveImage', function (e, editor, img) {
                     if (editor.triggerEvent("beforeDeleteImage", [img])) {
@@ -121,7 +122,6 @@ $.fn.froala_editor = $.fn.editable.noConflict();
                         });
                         return true;
                     } else {
-                        $.fn.mbHelpers.showMessage('warning', _this.options.trans.image_used);
                         return false;
                     }
                 })
@@ -130,9 +130,9 @@ $.fn.froala_editor = $.fn.editable.noConflict();
                         data = $.parseJSON(data);
                     }
                     if (data.error) {
-                        $.fn.mbHelpers.showMessage('warning', data.error);
+                        console.log('error:' + data.error);
                     } else {
-                        $.fn.mbHelpers.showMessage('success', data.success);
+                        console.log('success:' + data.success);
                     }
                 })
                 .on('editable.imageDeleteError', function (e, editor, error) {

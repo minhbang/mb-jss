@@ -49,18 +49,6 @@
             this.writeImage($(img).data("src"));
             this.hideMediaManager();
         }, this));
-        this.$media_images.on(this.mouseup, ".f-delete-img", $.proxy(function (b) {
-            b.stopPropagation();
-            var c = $(b.currentTarget).prev(),
-                d = "Are you sure? Image will be deleted.";
-            if ($.Editable.LANGS[this.options.language]) {
-                d = $.Editable.LANGS[this.options.language].translation[d];
-            }
-            if (confirm(d) && this.triggerEvent("beforeDeleteImage", [$(c)], false)) {
-                $(c).parent().addClass("f-img-deleting");
-                this.deleteImage($(c));
-            }
-        }, this));
 
         this.$media_pagination.on('click', "a", $.proxy(function (b) {
             b.preventDefault();
@@ -173,17 +161,13 @@
         var d = new Image,
             e = $("<div>").addClass("f-empty");
         d.onload = $.proxy(function () {
-            var strDelete = "Delete";
-            if ($.Editable.LANGS[this.options.language]) {
-                strDelete = $.Editable.LANGS[this.options.language].translation[strDelete];
-            }
             var img = $('<img src="' + src + '"/>');
             if (info) {
                 $.each(info, function (key, value) {
                     img.attr("data-" + key, value);
                 });
             }
-            e.append(img).append('<a class="f-delete-img"><i class="fa fa-trash-o"></i></a>');
+            e.append(img);
             e.removeClass("f-empty");
             this.$media_images.hide();
             this.$media_images.show();
