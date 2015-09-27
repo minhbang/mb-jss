@@ -1,94 +1,159 @@
-/*!
- * froala_editor v1.2.6 (http://editor.froala.com)
- * License http://editor.froala.com/license
- * Copyright 2014-2015 Froala Labs
- */
-
 /**
  * Vietnamese
  */
-
-$.Editable.LANGS['vi'] = {
+$.FroalaEditor.LANGUAGE['vi'] = {
     translation: {
+        // Place holder
+        "Type something": "Type something",
+
+        // Basic formatting
         "Bold": "Đậm",
         "Italic": "Nghiên",
         "Underline": "Gạch chân",
         "Strikethrough": "Gạch giữa",
+
+        // Main buttons
+        "Insert": "Chèn",
+        "Delete": "Xóa",
+        "Cancel": "Bỏ qua",
+        "OK": "OK",
+        "Back": "Back",
+        "Remove": "Xóa",
+        "More": "Nhiều",
+        "Update": "Cập nhật",
+        "Style": "Style",
+
+        // Font
+        "Font Family": "Font Family",
         "Font Size": "Cỡ chữ",
-        "Color": "Màu chữ",
-        "Background": "Màu nền",
+
+        // Colors
+        "Colors": "Màu chữ",
+        "Background": "Nền",
         "Text": "Chữ",
-        "Format Block": "Format Block",
-        "Normal": "Bình thường",
-        "Paragraph": "Đoạn",
-        "Code": "Mã",
-        "Quote": "Quote",
+
+        // Paragraphs
+        "Paragraph Format": "Paragraph Format",
+        "Normal": "Normal",
+        "Code": "Code",
         "Heading 1": "Heading 1",
         "Heading 2": "Heading 2",
         "Heading 3": "Heading 3",
         "Heading 4": "Heading 4",
-        "Heading 5": "Heading 5",
-        "Heading 6": "Heading 6",
-        "Block Style": "Block Style",
-        "Alignment": "Canh lề",
-        "Align Left": "Canh trái",
-        "Align Center": "Canh giữa",
-        "Align Right": "Canh phải",
-        "Justify": "Canh đều",
-        "Numbered List": "Numbered List",
-        "Bulleted List": "Bulleted List",
-        "Indent Less": "Indent Less",
-        "Indent More": "Indent More",
-        "Select All": "Chọn tất cả",
-        "Insert Link": "Chèn liên kết",
-        "Insert Image": "Chèn hình",
-        "Insert Video": "Chèn phim",
-        "Undo": "Undo",
-        "Redo": "Redo",
-        "Show HTML": "Mã HTML",
-        "Float Left": "Float Left",
-        "Float None": "Float None",
-        "Float Right": "Float Right",
-        "Replace Image": "Thay hình",
-        "Remove Image": "Bỏ hình",
-        "Title": "Tiêu đề",
+
+        // Style
+        "Paragraph Style": "Paragraph Style",
+        "Inline Style": "Inline Style",
+
+        // Alignment
+        "Align": "Align",
+        "Align Left": "Align Left",
+        "Align Center": "Align Centre",
+        "Align Right": "Alight Right",
+        "Align Justify": "Align Justify",
+        "None": "None",
+
+        // Lists
+        "Ordered List": "Ordered List",
+        "Unordered List": "Unordered List",
+
+        // Indent
+        "Decrease Indent": "Decrease Indent",
+        "Increase Indent": "Increase Indent",
+
+        // Links
+        "Insert Link": "Insert Link",
+        "Open in new tab": "Open in new tab",
+        "Open Link": "Open Link",
+        "Edit Link": "Edit Link",
+        "Unlink": "Unlink",
+        "Choose Link": "Choose Link",
+
+        // Images
+        "Insert Image": "Insert Image",
+        "Upload Image": "Upload Image",
+        "By URL": "By URL",
+        "Browse": "Browse",
         "Drop image": "Drop image",
         "or click": "or click",
-        "or": "hoặc",
-        "Enter URL": "Nhập URL",
-        "Please wait!": "Xin chờ!",
-        "Are you sure? Image will be deleted.": "Bạn có chắc không? Hình ảnh sẽ bị xóa.",
-        "UNLINK": "UNLINK",
-        "Open in new tab": "Open in new tab",
-        "Type something": "Type something",
-        "Cancel": "Bỏ qua",
-        "OK": "Đồng ý",
-        "Manage images": "Hình ảnh trên Server",
-        "Delete": "Xóa",
-        "Font Family": "Chọn Font",
-        "Insert Horizontal Line": "Đường kẻ ngang",
-        "Table": "Bảng",
-        "Insert table": "Chèn bảng",
-        "Cell": "Ô",
-        "Row": "Dòng",
-        "Column": "Cột",
-        "Delete table": "Xóa bảng",
-        "Insert cell before": "Chèn ô phía trước",
-        "Insert cell after": "Chèn ô phía sau",
-        "Delete cell": "Xóa ô",
-        "Merge cells": "Gộp ô",
+        "Manage Images": "Hình ảnh trên Server",
+        "Loading": "Loading",
+        "Deleting": "Deleting",
+        "Tags": "Tags",
+        "Are you sure? Image will be deleted.": "Are you sure? Image will be deleted.",
+        "Replace": "Replace",
+        "Uploading": "Uploading",
+        "Loading image": "Loading image",
+        "Display": "Display",
+        "Inline": "Inline",
+        "Break Text": "Break Text",
+        "Alternate Text": "Alternate Text",
+        "Change Size": "Change Size",
+        "Width": "Width",
+        "Height": "Height",
+        "Something went wrong. Please try again.": "Something went wrong. Please try again.",
+
+        // Video
+        "Insert Video": "Insert Video",
+        "Embedded Code": "Embedded Code",
+
+        // Tables
+        "Insert Table": "Insert Table",
+        "Header": "Header",
+        "Row": "Row",
+        "Insert row above": "Insert row above",
+        "Insert row below": "Insert row below",
+        "Delete row": "Delete row",
+        "Column": "Column",
+        "Insert column before": "Insert column before",
+        "Insert column after": "Insert column after",
+        "Delete column": "Delete column",
+        "Cell": "Cell",
+        "Merge cells": "Merge cells",
         "Horizontal split": "Horizontal split",
         "Vertical split": "Vertical split",
-        "Insert row above": "Chèn hàng phía trước",
-        "Insert row below": "Chèn hàng phía sau",
-        "Delete row": "Xóa dòng",
-        "Insert column before": "Chèn cột phía trước",
-        "Insert column after": "Chèn cột phía sau",
-        "Delete column": "Xóa cột",
-        "Uploading image": "Uploading image",
+        "Cell Background": "Cell Background",
+        "Vertical Align": "Vertical Align",
+        "Top": "Top",
+        "Middle": "Middle",
+        "Bottom": "Bottom",
+        "Align Top": "Align Top",
+        "Align Middle": "Align Middle",
+        "Align Bottom": "Align Bottom",
+        "Cell Style": "Cell Style",
+
+        // Files
         "Upload File": "Upload File",
-        "Drop File": "Drop File",
-        "Clear formatting": "Xóa định dạng"
+        "Drop file": "Drop file",
+
+        // Emoticons
+        "Emoticons": "Emoticons",
+
+        // Line breaker
+        "Break": "Break",
+
+        // Math
+        "Subscript": "Subscript",
+        "Superscript": "Superscript",
+
+        // Full screen
+        "Fullscreen": "Fullscreen",
+
+        // Horizontal line
+        "Insert Horizontal Line": "Insert Horizontal Line",
+
+        // Clear formatting
+        "Clear Formatting": "Cell Formatting",
+
+        // Undo, redo
+        "Undo": "Undo",
+        "Redo": "Redo",
+
+        // Select all
+        "Select All": "Chọn tất cả",
+
+        // Code view
+        "Code View": "Xem code"
     },
     direction: "ltr"
 };
