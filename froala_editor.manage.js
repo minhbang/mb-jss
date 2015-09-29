@@ -2,8 +2,7 @@
  * Init Froala Editor
  * @author: Minh Bang <contact@minhbang.com>
  */
-$.FroalaEditor.POPUP_TEMPLATES.imageInsert = '';
-(function ($) {
+(function ($, window) {
     var editors = {
             mini: {
                 toolbarButtons: [
@@ -66,12 +65,14 @@ $.FroalaEditor.POPUP_TEMPLATES.imageInsert = '';
             language: 'vi',
             charCounterCount: false,
             imageUploadParam: 'image',
+            imageUploadParams: {_token: window.csrf_token},
             imageDefaultWidth: 600,
             imageManagerPreloader: '/build/img/loading.gif',
             imageManagerPageSize: '20',
             imageManagerDeleteURL: false,
             // custom options
-            imageDeleteMethod: 'POST'
+            imageDeleteMethod: 'POST',
+            imageDeleteParams: {_token: window.csrf_token}
         };
 
     function MbEditor(element, options) {
@@ -151,4 +152,4 @@ $.FroalaEditor.POPUP_TEMPLATES.imageInsert = '';
 
         return retval || lists;
     };
-})(jQuery);
+})(jQuery, window);
