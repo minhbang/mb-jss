@@ -64,7 +64,6 @@
             height: 300,
             language: 'vi',
             charCounterCount: false,
-            imageUploadParam: 'image',
             imageUploadParams: {_token: window.csrf_token},
             imageDefaultWidth: 600,
             imageManagerPreloader: '/build/img/loading.gif',
