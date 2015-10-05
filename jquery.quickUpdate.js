@@ -10,6 +10,7 @@
                 container: 'body',
                 placement: 'right',
                 title: 'Quick Update',
+                no_value: '--- Chưa cập nhật ---',
                 attribute: 'attribute',
                 element: '<input class="form-control" type="text" value="" name="_value">',
                 class: null,
@@ -61,7 +62,7 @@
                     content: formHtml(attribute, $(this).data('qu_class') || options.class)
                 }).click(function (e) {
                     e.preventDefault();
-                    var old_val = $(this).text().trim();
+                    var old_val = $(this).data('qu_value');
                     hidePopover();
                     $(this).popover('show');
                     popover = $(this);
