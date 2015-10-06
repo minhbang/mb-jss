@@ -12,7 +12,7 @@
                 title: 'Quick Update',
                 no_value: '--- Chưa cập nhật ---',
                 attribute: 'attribute',
-                element: '<input class="form-control" type="text" value="" name="_value">',
+                element: '<input class="form-control _value" type="text" value="" name="_value">',
                 class: null,
                 dataTable: null,
                 updateSuccess: function (data, oTable) {
@@ -31,7 +31,7 @@
                     element = element.replace('class="', 'class="' + elementClass + ' ');
                 }
                 return '<form class="form-inline form-quick-update form-update-' + attribute + '">' +
-                    '<input type="hidden" value="' + attribute + '" name="_attr">' +
+                    '<input type="hidden" value="' + attribute + '" name="_attr" class="_attr">' +
                     '<div class="form-group">' +
                     element +
                     '<button class="btn btn-success btn-update-' + attribute + '-ok" type="button"><span class="glyphicon glyphicon-ok"></span></button>' +
@@ -91,7 +91,7 @@
                         }
                     });
                     if (options.afterShow) {
-                        options.afterShow(form);
+                        options.afterShow(this, form);
                     }
                 });
             });
