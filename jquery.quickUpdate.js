@@ -15,12 +15,18 @@
                 element: '<input class="form-control _value" type="text" value="" name="_value">',
                 class: null,
                 dataTable: null,
-                updateSuccess: function (data, oTable) {
-                    if (data.type == 'success' && oTable) {
-                        oTable.dataTable().fnReloadAjax();
+                updateSuccess: function (data, oTable, processResult) {
+                    if (data.type == 'success') {
+                        if (oTable) {
+                            oTable.dataTable().fnReloadAjax();
+                        }
+                        if (processResult && (typeof data.result !== 'undefined')) {
+                            processResult(data.result);
+                        }
                     }
                     $.fn.mbHelpers.showMessage(data.type, data.message);
                 },
+                processResult: null,
                 afterShow: null
             };
             options = $.extend(defaults, options);
@@ -83,7 +89,7 @@
                             }, function (data) {
                                 hidePopover();
                                 if (options.updateSuccess) {
-                                    options.updateSuccess(data, options.dataTable);
+                                    options.updateSuccess(data, options.dataTable, options.processResult);
                                 }
                             }, 'json');
                         } else {
