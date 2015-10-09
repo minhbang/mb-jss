@@ -42,6 +42,7 @@ $.fn.dataTableExt.oApi.fnSetFilteringDelay = function (oSettings, iDelay) {
             bSort: false,
             bStateSave: true
         },
+        delete_confirm: null,
         trans: {
             name: "Nội dung",
             delete: "Xóa",
@@ -69,7 +70,7 @@ $.fn.dataTableExt.oApi.fnSetFilteringDelay = function (oSettings, iDelay) {
 
             _config.fnRowCallback = function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 var numStart = this.fnPagingInfo().iStart,
-                        index = numStart + iDisplayIndexFull + 1;
+                    index = numStart + iDisplayIndexFull + 1;
                 $(nRow).attr("id", 'row-' + aData[0]);
                 if (_options.row_index) {
                     $("td:first", nRow).html(index);
@@ -82,10 +83,16 @@ $.fn.dataTableExt.oApi.fnSetFilteringDelay = function (oSettings, iDelay) {
                 oTable.find('a[data-toggle=tooltip]').tooltip({'container': 'body'});
                 oTable.find('a.delete-link').click(function (e) {
                     e.preventDefault();
-                    var data = $(this).data();
-                    var url = $(this).attr('href');
+                    var data = $(this).data(),
+                        url = $(this).attr('href'),
+                        message = '';
+                    if (_options.delete_confirm) {
+                        message = "<div class=\"confirm\">" + _options.delete_confirm + "</div>";
+                    } else {
+                        message = "<div class=\"confirm\">" + _options.trans.delete_confirm + ' ' + _options.trans.name + ":</div><div class=\"title\">" + data['title'] + "</div>";
+                    }
                     window.bootbox.confirm({
-                        message: "<div class=\"message-delete\"><div class=\"confirm\">" + _options.trans.delete_confirm + ' ' + _options.trans.name + ":</div><div class=\"title\">" + data['title'] + "</div>",
+                        message: "<div class=\"message-delete\">" + message + "</div>",
                         title: _options.trans.delete + ' ' + _options.trans.name + '?',
                         buttons: {
                             cancel: {label: _options.trans.cancel, className: "btn-default btn-white"},
