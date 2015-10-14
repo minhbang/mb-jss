@@ -67,7 +67,7 @@
             imageUploadParams: {_token: window.csrf_token},
             imageDefaultWidth: 600,
             imageManagerPreloader: '/build/img/loading.gif',
-            imageManagerPageSize: '20',
+            imageManagerPageSize: 12,
             imageManagerDeleteURL: false,
             // custom options
             imageDeleteMethod: 'POST',
@@ -116,9 +116,9 @@
                         $.ajax({
                                 method: _options.imageDeleteMethod,
                                 url: _options.imageDeleteURL,
-                                data: $.extend(true, _options.imageDeleteParams, {file: src})
+                                data: $.extend(true, _options.imageDeleteParams, {src: src})
                             })
-                            .done (function (data) {
+                            /*.done (function (data) {
                                 if ($.type(data) === 'string') {
                                     data = $.parseJSON(data);
                                 }
@@ -127,7 +127,7 @@
                                 } else {
                                     console.log('success:' + data.success);
                                 }
-                            })
+                            })*/
                             .fail (function () {
                                 $.fn.mbHelpers.showMessage('error', 'Image delete problem');
                             });
