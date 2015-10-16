@@ -8,19 +8,18 @@
         container: 'body',
         placement: 'right',
         title: 'Quick Update',
-        no_value: '--- Chưa cập nhật ---',
         attribute: 'attribute',
         elementTemplate: '<input class="form-control _value" type="text" value="" name="_value">',
         elementClass: null,
         dataTable: null,
         updateParams: {_token: window.csrf_token},
-        updateSuccess: function (data, oTable, processResult) {
+        updateSuccess: function (e, data, oTable, processResult) {
             if (data.type == 'success') {
+                if (processResult && (typeof data.result !== 'undefined')) {
+                    processResult(e, data.result);
+                }
                 if (oTable) {
                     oTable.dataTable().fnReloadAjax();
-                }
-                if (processResult && (typeof data.result !== 'undefined')) {
-                    processResult(data.result);
                 }
             }
             $.fn.mbHelpers.showMessage(data.type, data.message);
@@ -39,8 +38,8 @@
             '<input type="hidden" value="' + attribute + '" name="_attr" class="_attr">' +
             '<div class="form-group">' +
             element +
-            '<button class="btn btn-success btn-update-' + attribute + '-ok" type="button"><span class="glyphicon glyphicon-ok"></span></button>' +
-            '<button class="btn btn-white btn-update-' + attribute + '-cancel" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
+            '<button href="#" class="btn btn-success btn-ok" type="submit"><span class="glyphicon glyphicon-ok"></span></button>' +
+            '<button href="#" class="btn btn-white btn-cancel" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
             '</div>' +
             '</form>';
     }
@@ -71,7 +70,7 @@
             });
 
             that.element.click(function (e) {
-                if(that.element.hasClass('popover-showed')){
+                if (that.element.hasClass('popover-showed')) {
                     return;
                 }
                 e.preventDefault();
@@ -80,12 +79,12 @@
                 that.element.addClass('popover-showed').popover('show');
                 var form = that.container.find('.popover-content form');
                 form.find('[name="_value"]').val(old_val);
-
-                form.on('click', '.btn-update-' + that.attribute + '-cancel', function () {
+                form.on('click', '.btn-cancel', function () {
                     that.hideAll();
                 });
 
-                form.on('click', '.btn-update-' + that.attribute + '-ok', function () {
+                form.submit(function (e) {
+                    e.preventDefault();
                     var new_val = form.find('[name="_value"]').val();
                     if (new_val != old_val) {
                         if (that.options.beforeSubmit && !that.options.beforeSubmit(that.element, new_val)) {
@@ -96,11 +95,11 @@
                         if (that.options.url) {
                             url = that.options.url.replace('__ID__', url.replace('#', ''));
                         }
-                        var params = container.find('.popover-content form').serialize();
+                        var params = that.container.find('.popover-content form').serialize();
                         $.post(url + '?' + params, that.options.updateParams, function (data) {
                             that.hideAll();
                             if (that.options.updateSuccess) {
-                                that.options.updateSuccess(data, that.options.dataTable, that.options.processResult);
+                                that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult);
                             }
                         }, 'json');
                     } else {
@@ -110,6 +109,7 @@
                 if (that.options.afterShow) {
                     that.options.afterShow(that.element, form);
                 }
+                form.find('input[type="text"], select').focus();
             });
         },
         show: function () {
