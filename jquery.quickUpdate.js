@@ -38,8 +38,8 @@
             '<input type="hidden" value="' + attribute + '" name="_attr" class="_attr">' +
             '<div class="form-group">' +
             element +
-            '<button href="#" class="btn btn-success btn-ok" type="submit"><span class="glyphicon glyphicon-ok"></span></button>' +
-            '<button href="#" class="btn btn-white btn-cancel" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
+            '<button class="btn btn-success btn-ok" type="submit"><span class="glyphicon glyphicon-ok"></span></button>' +
+            '<button class="btn btn-white btn-cancel" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
             '</div>' +
             '</form>';
     }
