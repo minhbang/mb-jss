@@ -2,30 +2,53 @@
  * Quản lý Dropzone Js
  * Sử dụng:
  * $(selector).mbDropzone(options);
+ *
+ * Thay đổi các giá trị mặc định:
+ * 1. Url:
+ * url_store:  '{!!route('image.store')!!}',
+ * url_delete: '{!!route('backend.image.destroy', ['image' => '__ID__'])!!}',
+ * url_update: '{!!route('backend.image.quick_update', ['image' => '__ID__'])!!}',
+ * 2. Thumbnail width
+ * thumb_width: '{{config('image.thumbnail.width')*4}}',
+ * thumb_height: '{{config('image.thumbnail.height')*4}}',
+ * 3. Ngôn ngữ:
+ * trans:{
+ *     title: '{{trans('image::common.title')}}',
+ *     null_title: '{{trans('image::common.null_title')}}',
+ *     delete_title: '{{trans('image::common.delete_title')}}',
+ *     delete_confirm: '{{trans('image::common.delete_confirm')}}',
+ *     ok: '{{trans('common.ok')}}',
+ *     cancel: '{{trans('common.cancel')}}',
+ *     delete: '{{trans('common.delete')}}',
+ *     upload: '{{trans('common.upload')}}',
+ *     add_files: '{{trans('common.add_files')}}',
+ *     tags: '{{trans('image::common.tags')}}'
+ * },
  */
 ;
 (function ($) {
     'use strict';
     var defaults = {
-        all_tags: '',
-        url_store: null,
-        url_delete: null,
-        url_update: null,
+        all_tags: "",
+        url_store: "/image/store",
+        url_delete: "/backend/image/__ID__",
+        url_update: "/backend/image/__ID__/quick_update",
         thumb_width: 480,
         thumb_height: 360,
-        token: null,
+        token: window.csrf_token,
         trans: {
-            title: 'Tiêu đề',
-            null_title: '— Không tiêu đề —',
-            delete_title: 'Xóa Hình ảnh',
-            delete_confirm: 'Bạn có chắc chắn muốn xóa Hình ảnh này?',
-            ok: 'Đồng ý',
-            cancel: 'Bỏ qua',
-            delete: 'Xóa',
-            upload: 'Tải lên',
-            add_files: 'Thêm File',
-            tags: 'Tags'
-        }
+            title: "Tiêu đề",
+            null_title: "— Không tiêu đề —",
+            delete_title: "Xóa Hình ảnh",
+            delete_confirm: "Bạn có chắc chắn muốn xóa Hình ảnh này?",
+            ok: "Đồng ý",
+            cancel: "Bỏ qua",
+            delete: "Xóa",
+            upload: "Tải lên",
+            add_files: "Thêm File",
+            tags: "Tags"
+        },
+        preview_grid: "col-lg-3 col-md-4 col-sm-6 col-xs-6"
     };
 
     function templateQuickUpdate(attr, cls, title, plt, label) {
@@ -43,8 +66,8 @@
             '</a>';
     }
 
-    function templatePreview(trans) {
-        return '<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6">' +
+    function templatePreview(trans, preview_grid) {
+        return '<div class="'+preview_grid+'">' +
             '<div class="inner">' +
             '<div class="status-mark" style="display: none">' +
             '<span class="dz-error-mark fa fa-remove error"></span>' +
@@ -121,7 +144,7 @@
                 thumbnailWidth: this.options.thumb_width,
                 thumbnailHeight: this.options.thumb_height,
                 parallelUploads: 1,
-                previewTemplate: templatePreview(this.options.trans),
+                previewTemplate: templatePreview(this.options.trans, this.options.preview_grid),
                 autoQueue: false,
                 previewsContainer: ".dropzone-previews",
                 clickable: ".fileinput-button"
