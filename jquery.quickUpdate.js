@@ -13,10 +13,10 @@
         elementClass: null,
         dataTable: null,
         updateParams: {_token: window.csrf_token},
-        updateSuccess: function (e, data, oTable, processResult) {
+        updateSuccess: function (e, data, oTable, processResult, new_val) {
             if (data.type == 'success') {
-                if (processResult && (typeof data.result !== 'undefined')) {
-                    processResult(e, data.result);
+                if (processResult) {
+                    processResult(e, data.result || null, new_val);
                 }
                 if (oTable) {
                     oTable.dataTable().fnReloadAjax();
@@ -99,7 +99,7 @@
                         $.post(url + '?' + params, that.options.updateParams, function (data) {
                             that.hideAll();
                             if (that.options.updateSuccess) {
-                                that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult);
+                                that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult, new_val);
                             }
                         }, 'json');
                     } else {
