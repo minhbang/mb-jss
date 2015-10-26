@@ -70,13 +70,13 @@
             });
 
             that.element.click(function (e) {
-                if (that.element.hasClass('popover-showed')) {
+                if ($(this).hasClass('popover-showed')) {
                     return;
                 }
                 e.preventDefault();
-                var old_val = that.element.data('qu_value');
+                var old_val = $(this).data('qu_value');
                 that.hideAll();
-                that.element.addClass('popover-showed').popover('show');
+                $(this).addClass('popover-showed').popover('show');
                 var form = that.container.find('.popover-content form');
                 form.find('[name="_value"]').val(old_val);
                 form.on('click', '.btn-cancel', function () {
