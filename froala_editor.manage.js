@@ -6,7 +6,7 @@
     var editors = {
             mini: {
                 toolbarButtons: [
-                    'undo', 'redo', 'selectAll', '|',
+                    'undo', 'redo', '|',
                     'bold', 'italic', 'underline'
                 ],
                 htmlAllowedTags: ['p', 'b', 'strong', 'i', 'em', 'u'],
@@ -15,7 +15,7 @@
             },
             simple: {
                 toolbarButtons: [
-                    'undo', 'redo', 'selectAll', '|',
+                    'undo', 'redo', '|',
                     'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
                     'align', 'outdent', 'indent', 'formatOL', 'formatUL'
                 ],
@@ -25,7 +25,7 @@
             },
             basic_no_image: {
                 toolbarButtons: [
-                    'undo', 'redo', 'selectAll', '|',
+                    'undo', 'redo', '|',
                     'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
                     'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
                     'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
@@ -37,7 +37,7 @@
             },
             basic: {
                 toolbarButtons: [
-                    'undo', 'redo', 'selectAll', '|',
+                    'undo', 'redo', '|',
                     'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
                     'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
                     'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
@@ -48,7 +48,7 @@
             },
             full: {
                 toolbarButtons: [
-                    'undo', 'redo', 'selectAll', '|',
+                    'undo', 'redo', '|',
                     'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
                     'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'inlineStyle', 'clearFormatting', '|',
                     'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
