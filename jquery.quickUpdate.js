@@ -4,6 +4,8 @@
 (function ($, window) {
     'use strict';
     var defaults = {
+        default_method: "show",
+        immediate: false,
         url: null,
         container: 'body',
         placement: 'right',
@@ -68,55 +70,60 @@
                     that.element.data('qu_class') || that.options.elementClass
                 )
             });
-
-            that.element.click(function (e) {
-                if ($(this).hasClass('popover-showed')) {
-                    return;
-                }
-                e.preventDefault();
-                var old_val = $(this).data('qu_value');
-                that.hideAll();
-                $(this).addClass('popover-showed').popover('show');
-                var form = that.container.find('.popover-content form');
-                form.find('[name="_value"]').val(old_val);
-                form.on('click', '.btn-cancel', function () {
-                    that.hideAll();
-                });
-
-                form.submit(function (e) {
+            if (that.options.immediate) {
+                that.show();
+            } else {
+                that.element.click(function (e) {
                     e.preventDefault();
-                    var new_val = form.find('[name="_value"]').val();
-                    if (new_val != old_val) {
-                        if (that.options.beforeSubmit && !that.options.beforeSubmit(that.element, new_val)) {
-                            that.hideAll();
-                            return;
-                        }
-                        var url = that.element.attr('href');
-                        if (that.options.url) {
-                            url = that.options.url.replace('__ID__', url.replace('#', ''));
-                        }
-                        var params = that.container.find('.popover-content form').serialize();
-                        $.post(url + '?' + params, that.options.updateParams, function (data) {
-                            that.hideAll();
-                            if (that.options.updateSuccess) {
-                                that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult, new_val);
-                            }
-                        }, 'json');
-                    } else {
-                        that.hideAll();
-                    }
+                    that.show();
                 });
-                if (that.options.afterShow) {
-                    that.options.afterShow(that.element, form);
-                }
-                form.find('input[type="text"], select').focus();
-            });
+            }
         },
+        isShowed: function () {
+            return this.element.hasClass('popover-showed');
+        },
+
         show: function () {
-            this.element.popover('show');
-        },
-        hide: function () {
-            this.element.popover('hide');
+            if (this.isShowed()) {
+                return;
+            }
+            var that = this,
+                old_val = that.element.data('qu_value');
+            that.hideAll();
+            that.element.addClass('popover-showed').popover('show');
+            var form = that.container.find('.popover-content form');
+            form.find('[name="_value"]').val(old_val);
+            form.on('click', '.btn-cancel', function () {
+                that.hideAll();
+            });
+
+            form.submit(function (e) {
+                e.preventDefault();
+                var new_val = form.find('[name="_value"]').val();
+                if (new_val != old_val) {
+                    if (that.options.beforeSubmit && !that.options.beforeSubmit(that.element, new_val)) {
+                        that.hideAll();
+                        return;
+                    }
+                    var url = that.element.attr('href');
+                    if (that.options.url) {
+                        url = that.options.url.replace('__ID__', url.replace('#', ''));
+                    }
+                    var params = that.container.find('.popover-content form').serialize();
+                    $.post(url + '?' + params, that.options.updateParams, function (data) {
+                        that.hideAll();
+                        if (that.options.updateSuccess) {
+                            that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult, new_val);
+                        }
+                    }, 'json');
+                } else {
+                    that.hideAll();
+                }
+            });
+            if (that.options.afterShow) {
+                that.options.afterShow(that.element, form);
+            }
+            form.find('input[type="text"], select').focus();
         },
         hideAll: function () {
             $('.popover-showed', this.container).removeClass('popover-showed').popover('hide');
@@ -134,6 +141,8 @@
             } else {
                 if (typeof options === 'string' && typeof plugin[options] === 'function') {
                     retval = plugin[options]();
+                } else {
+                    retval = plugin[plugin.options.default_method]();
                 }
             }
         });
