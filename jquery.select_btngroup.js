@@ -6,11 +6,13 @@
     $.fn.extend({
         select_btngroup: function (options) {
             var defaults = {
-                wrapper: 'select-btngroup'
+                wrapper: 'select-btngroup',
+                dataTable: null
             };
             options = $.extend(defaults, options);
             return this.each(function () {
                 var select_original = $(this);
+                var size = select_original.data('size') || '';
                 select_original.hide();
                 var html = '';
                 var selected = select_original.find('option:selected');
@@ -23,7 +25,7 @@
                     var item_class = value !== selected.val() ? '' : ' class="hidden"';
                     html += '<li' + item_class + '><a href="' + url + '" data-type="' + type + '" data-value="' + value + '">' + $(this).text() + '</a></li>';
                 });
-                var btngroup = '<div class="' + options.wrapper + '"><div class="btn-group">\
+                var btngroup = '<div class="' + options.wrapper + '"><div class="btn-group btn-group-' + size + '">\
   <button type="button" class="btn btn-' + selected_type + ' select-btngroup-button">' + selected.text() + '</button>\
   <button type="button" class="btn btn-' + selected_type + ' dropdown-toggle" data-toggle="dropdown">\
     <span class="caret"></span>\
@@ -42,6 +44,15 @@
                     current.removeClass('hidden');
                     $(this).parent().addClass('hidden');
                     select_original.val($(this).data('value'));
+                    var url = $(this).attr('href');
+                    if (url !== '#') {
+                        $.post(url, {_token: window.csrf_token}, function (data) {
+                            $.fn.mbHelpers.showMessage(data.type, data.content);
+                            if (options.dataTable) {
+                                options.dataTable.dataTable().fnReloadAjax();
+                            }
+                        }, 'json');
+                    }
                 });
             });
         }
