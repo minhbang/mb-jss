@@ -153,7 +153,11 @@ $.FroalaEditor.LANGUAGE['vi'] = {
         "Select All": "Chọn tất cả",
 
         // Code view
-        "Code View": "Xem code"
+        "Code View": "Xem code",
+        // Quote
+        "Quote": "Quote",
+        "Increase": "Increase",
+        "Decrease": "Decrease"
     },
     direction: "ltr"
 };
