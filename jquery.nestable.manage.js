@@ -19,6 +19,8 @@
             ok: "Đồng ý"
         },
         afterReload: null,
+        afterDrop: null,
+        reload: null,
         csrf_token: null
     };
 
@@ -56,6 +58,9 @@
                             $.post(that.options.url.move, data, function (message) {
                                 $.fn.mbHelpers.showMessage(message.type, message.content);
                                 toggleLoading(that);
+                                if (that.options.afterDrop) {
+                                    that.options.afterDrop(data);
+                                }
                             }, 'json');
                         }
                     }
@@ -97,16 +102,20 @@
         },
         reload: function () {
             var that = this;
-            toggleLoading(that);
-            $.get(this.options.url.data, function (data) {
-                that.dd.html(data.html);
-                that.dd.nestable('reinit');
-                if (that.afterReload) {
-                    that.afterReload(data);
-                }
-                enableBootstrap(that.dd);
+            if (that.options.reload) {
+                that.options.reload();
+            } else {
                 toggleLoading(that);
-            }, 'json');
+                $.get(this.options.url.data, function (data) {
+                    that.dd.html(data.html);
+                    that.dd.nestable('reinit');
+                    if (that.options.afterReload) {
+                        that.options.afterReload(data);
+                    }
+                    enableBootstrap(that.dd);
+                    toggleLoading(that);
+                }, 'json');
+            }
         }
     };
     $.fn.mbNestable = function (params) {
