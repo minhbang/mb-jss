@@ -10,6 +10,12 @@
         delimiter: ',',
         persist: false,
         options: '',
+        createOnBlur: true,
+        render: {
+            option_create: function (data, escape) {
+                return '<div class="create">+<strong>' + escape(data.input) + '</strong>&hellip;</div>';
+            }
+        },
         create: function (input) {
             return {
                 value: input,
