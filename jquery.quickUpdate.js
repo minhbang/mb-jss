@@ -123,7 +123,7 @@
             if (that.options.afterShow) {
                 that.options.afterShow(that.element, form);
             }
-            form.find('input[type="text"], select').focus();
+            form.find('input[name="_value"]').focus();
         },
         hideAll: function () {
             $('.popover-showed', this.container).removeClass('popover-showed').popover('hide');
