@@ -3,7 +3,8 @@
  */
 (function ($, window) {
     'use strict';
-    var defaults = {
+    var default_element = '<input class="form-control _value" type="text" value="" name="_value">',
+        defaults = {
         default_method: "show",
         immediate: false,
         url: null,
@@ -11,7 +12,7 @@
         placement: 'right',
         title: 'Quick Update',
         attribute: 'attribute',
-        elementTemplate: '<input class="form-control _value" type="text" value="" name="_value">',
+        elementTemplate: default_element,
         elementClass: null,
         dataTable: null,
         updateParams: {_token: window.csrf_token},
@@ -46,6 +47,20 @@
             '</form>';
     }
 
+    function getElementTemplate(element, templates) {
+        var template = default_element;
+        if (typeof templates === 'string') {
+            template = templates;
+        } else {
+            $.each(templates, function (selector, templ) {
+                if(element.is(selector)){
+                    template = templ;
+                }
+            });
+        }
+        return template
+    }
+
     function QuickUpdate(element, options) {
         this.element = $(element);
         this.options = $.extend(true, defaults, options);
@@ -57,7 +72,6 @@
     QuickUpdate.prototype = {
         init: function () {
             var that = this;
-
             that.element.popover({
                 container: that.options.container,
                 placement: that.element.data('qu_placement') || that.options.placement,
@@ -66,7 +80,7 @@
                 title: that.element.data('qu_title') || that.options.title,
                 content: formHtml(
                     that.attribute,
-                    that.options.elementTemplate,
+                    getElementTemplate(that.element, that.options.elementTemplate),
                     that.element.data('qu_class') || that.options.elementClass
                 )
             });
