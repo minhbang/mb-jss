@@ -1,4 +1,5 @@
 /**
+ * V2.0.5
  * Vietnamese
  */
 $.FroalaEditor.LANGUAGE['vi'] = {

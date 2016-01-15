@@ -1,4 +1,5 @@
 /**
+ * V2.0.5
  * Init Froala Editor
  * @author: Minh Bang <contact@minhbang.com>
  */
