@@ -105,7 +105,7 @@
                     html_items += '<tr>' + _this.template_item
                             .replace(/__URL__/g, item.attributes.url)
                             .replace(/__NAME__/g, item.name)
-                            .replace(/#__IMG_SM__/g, item.attributes.image_small_url)
+                            .replace(/data-src="#__IMG_SM__"/g, 'src="'+item.attributes.image_small_url+'"')
                             .replace(/__QUANTITY__/g, item.quantity)
                             .replace(/__PRICE__/g, numeral(item.price).format(0.0))
                             .replace(/__ID__/g, item.id) + '</tr>';
@@ -131,7 +131,7 @@
                     item_price_old = $('.price-old', cart_item).text(),
                     item_price_new = $('.price-new', cart_item).text(),
                     form = _this.template_form
-                        .replace(/#__IMG__/g, item_image)
+                        .replace(/data-src="#__IMG__"/g, 'src="'+item_image+'"')
                         .replace(/__NAME__/g, item_name)
                         .replace(/__PRICE_NEW__/g, item_price_new)
                         .replace(/__PRICE_OLD__/g, item_price_old)

@@ -80,7 +80,7 @@ $.fn.dataTableExt.oApi.fnSetFilteringDelay = function (oSettings, iDelay) {
 
             _config.fnDrawCallback = function (oSettings) {
                 var oTable = $('#' + oSettings.sInstance);
-                oTable.find('a[data-toggle=tooltip]').tooltip({'container': 'body'});
+                oTable.find('[data-toggle=tooltip]').tooltip({'container': 'body'});
                 oTable.find('a.delete-link').click(function (e) {
                     e.preventDefault();
                     var data = $(this).data(),
