@@ -1,5 +1,5 @@
 /**
- * V2.0.5
+ * V2.2.0
  * Vietnamese
  */
 $.FroalaEditor.LANGUAGE['vi'] = {
@@ -158,7 +158,10 @@ $.FroalaEditor.LANGUAGE['vi'] = {
         // Quote
         "Quote": "Quote",
         "Increase": "Increase",
-        "Decrease": "Decrease"
+        "Decrease": "Decrease",
+
+        // Quick Insert
+        "Quick Insert": "Quick Insert"
     },
     direction: "ltr"
 };
