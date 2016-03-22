@@ -52,7 +52,7 @@
                     }
                     if (!query.length) return callback();
                     $.ajax({
-                        url: _this.options.url + '/' + encodeURIComponent(query),
+                        url:  _this.options.url.replace('__QUERY__', encodeURIComponent(query)),
                         type: 'GET',
                         error: function () {
                             callback();
