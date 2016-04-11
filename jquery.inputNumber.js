@@ -9,9 +9,24 @@
         aSep: '.'
     };
 
+    function getOption(element, $name) {
+        var option = element.data($name);
+        if (option == undefined) {
+            option = defaults[$name];
+        }
+        return option;
+    }
+
     function InputNumber(element, options) {
         this.element = $(element);
-        this.options = $.extend(true, defaults, options);
+        this.options = $.extend(true,
+            {
+                mDec: getOption(this.element, 'mdec'),
+                aDec: getOption(this.element, 'adec'),
+                aSep: getOption(this.element, 'asep')
+            },
+            options
+        );
         this.init();
     }
 
