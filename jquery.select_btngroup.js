@@ -14,12 +14,19 @@
             selected_type = selected.data('type') || 'default',
             size = select.data('size') || '';
         select.find('option').each(function () {
-            var data = $(this).data();
-            var value = $(this).attr('value');
-            var url = data.url || '#';
-            var type = data.type || 'default';
-            var item_class = value !== selected.val() ? '' : ' class="hidden"';
-            html += '<li' + item_class + '><a href="' + url + '" data-type="' + type + '" data-value="' + value + '">' + $(this).text() + '</a></li>';
+            var data = $(this).data(),
+                type = data.type || 'default',
+                text = $(this).text();
+            if (type === 'separator') {
+                html += '<li role="separator" class="divider"></li>';
+            } else if (type === 'group') {
+                html += '<li role="separator" class="group">' + text + '</li>';
+            } else {
+                var value = $(this).attr('value'),
+                    url = data.url || '#',
+                    item_class = value !== selected.val() ? '' : ' class="hidden"';
+                html += '<li' + item_class + '><a href="' + url + '" data-type="' + type + '" data-value="' + value + '">' + text + '</a></li>';
+            }
         });
         return '<div class="' + wrapper + '"><div class="btn-group btn-group-' + size + '">\
   <button type="button" class="btn btn-' + selected_type + ' select-btngroup-button">' + selected.text() + '</button>\
