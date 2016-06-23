@@ -1,65 +1,85 @@
 /**
- * V2.2.0
+ * V2.3.3
  * Init Froala Editor
  * @author: Minh Bang <contact@minhbang.com>
  */
 (function ($, window) {
-    var editors = {
+    var //SX
+        toolbarXS = [
+            'undo', 'redo', '|',
+            'bold', 'italic', 'underline'
+        ],
+        tagsXS = ['p', 'b', 'strong', 'i', 'em', 'u'],
+
+    //SM
+        toolbarSM = toolbarXS.concat(['strikeThrough', 'subscript', 'superscript', '|',
+            'align', 'outdent', 'indent', 'formatOL', 'formatUL'
+        ]),
+        pluginsSM = ['align', 'lists'],
+        tagsSM = tagsXS.concat(['sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br']),
+        attrsSM = ['style'],
+
+    //MD
+        toolbarMD = toolbarSM.concat([
+            '|', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
+            'insertLink', 'insertImage', 'insertTable', 'insertHR', 'fullscreen'
+        ]),
+        pluginsMD = pluginsSM.concat(['fontSize', 'colors', 'paragraphFormat', 'paragraphStyle', 'link', 'table', 'fullscreen']),
+        tagsMD = tagsSM.concat(['hr', 'table', 'tbody', 'tr', 'td', 'th', 'a']),
+        attrsMD = attrsSM.concat(['class', 'colspan', 'rowspan', 'href', 'target', 'title', 'alt']),
+
+    //FULL
+        toolbarFULL = toolbarSM.concat([
+            '|', 'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'inlineStyle', 'clearFormatting', '|',
+            'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'insertHR', 'insertFile', '|',
+            '-', 'emoticons', 'quote', 'html', 'fullscreen'
+        ]),
+
+        editors = {
             mini: {
-                toolbarButtons: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'underline'
-                ],
-                htmlAllowedTags: ['p', 'b', 'strong', 'i', 'em', 'u'],
+                pluginsEnabled: [],
+                toolbarButtons: toolbarXS,
+                toolbarButtonsMD: toolbarXS,
+                toolbarButtonsSM: toolbarXS,
+                htmlAllowedTags: tagsXS,
                 htmlAllowedAttrs: [],
                 imagePaste: false
             },
             simple: {
-                toolbarButtons: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
-                    'align', 'outdent', 'indent', 'formatOL', 'formatUL'
-                ],
-                htmlAllowedTags: ['p', 'b', 'strong', 'i', 'em', 'u', 'sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br'],
-                htmlAllowedAttrs: ['style'],
+                pluginsEnabled: pluginsSM,
+                toolbarButtons: toolbarSM,
+                toolbarButtonsMD: toolbarSM,
+                toolbarButtonsSM: toolbarSM,
+                htmlAllowedTags: tagsSM,
+                htmlAllowedAttrs: attrsSM,
                 imagePaste: false
             },
             basic_no_image: {
-                toolbarButtons: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
-                    'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
-                    'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
-                    'insertLink', 'insertTable', 'insertHR', 'fullscreen'
-                ],
-                htmlAllowedTags: ['p', 'b', 'strong', 'i', 'em', 'u', 'sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br', 'hr', 'insertTable', 'tbody', 'tr', 'td'],
-                htmlAllowedAttrs: ['style', 'class', 'colspan', 'rowspan', 'href', 'title', 'alt'],
+                pluginsEnabled: pluginsMD,
+                toolbarButtons: toolbarMD,
+                toolbarButtonsMD: toolbarMD,
+                toolbarButtonsSM: toolbarSM,
+                htmlAllowedTags: tagsMD,
+                htmlAllowedAttrs: attrsMD,
                 imagePaste: false
             },
             basic: {
-                toolbarButtons: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
-                    'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
-                    'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
-                    'insertLink', 'insertImage', 'insertTable', 'insertHR', 'fullscreen'
-                ],
-                htmlAllowedTags: ['p', 'b', 'strong', 'i', 'em', 'u', 'sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br', 'hr', 'insertTable', 'tbody', 'tr', 'td', 'img'],
-                htmlAllowedAttrs: ['style', 'class', 'colspan', 'rowspan', 'href', 'title', 'alt', 'src']
+                pluginsEnabled: pluginsMD.concat['image'],
+                toolbarButtons: toolbarMD,
+                toolbarButtonsMD: toolbarMD,
+                toolbarButtonsSM: toolbarSM,
+                htmlAllowedTags: tagsMD.concat(['img']),
+                htmlAllowedAttrs: attrsMD.concat(['src'])
             },
             full: {
-                toolbarButtons: [
-                    'undo', 'redo', '|',
-                    'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', '|',
-                    'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'inlineStyle', 'clearFormatting', '|',
-                    'align', 'outdent', 'indent', 'formatOL', 'formatUL', '|',
-                    'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'insertHR', 'insertFile', '|',
-                    '-', 'emoticons', 'quote', 'html', 'fullscreen'
-                ]
+                toolbarButtons: toolbarFULL,
+                toolbarButtonsMD: toolbarMD,
+                toolbarButtonsSM: toolbarSM
             }
         },
         defaults = {
             toolbarInline: false,
+            toolbarButtonsXS: toolbarXS,
             theme: 'mb',
             placeholderText: "",
             height: 300,
@@ -71,6 +91,7 @@
             imageManagerPageSize: 12,
             imageManagerDeleteURL: false,
             // custom options
+            imageDeleteURL: null,
             imageDeleteMethod: 'POST',
             imageDeleteParams: {_token: window.csrf_token}
         };
@@ -93,18 +114,21 @@
         init: function () {
             var _element = this.element,
                 _options = this.options;
-            _element.froalaEditor(this.options)
+            _element.froalaEditor(_options)
                 .on('froalaEditor.commands.after', function (e, editor, cmd, param1, param2) {
+                    console.log(param1);
+                    console.log(param2);
                     switch (cmd) {
                         case 'imageSetAlt':
                             var img = $(e.target);
                             console.log(img.attr('alt'));
                             break;
                         default:
-                        //console.log(cmd);
+                            console.log(cmd);
                     }
                 })
                 .on('froalaEditor.imageManager.error', function (e, editor, error, response) {
+                    console.log(response);
                     $.fn.mbHelpers.showMessage('error', error.message);
                 })
                 .on('froalaEditor.image.error', function (e, editor, error) {
@@ -115,21 +139,21 @@
                         src = $($img).attr('src');
                     if (html.indexOf(src) === -1) {
                         $.ajax({
-                                method: _options.imageDeleteMethod,
-                                url: _options.imageDeleteURL,
-                                data: $.extend(true, _options.imageDeleteParams, {src: src})
-                            })
-                            /*.done (function (data) {
-                                if ($.type(data) === 'string') {
-                                    data = $.parseJSON(data);
-                                }
-                                if (data.error) {
-                                    console.log('error:' + data.error);
-                                } else {
-                                    console.log('success:' + data.success);
-                                }
-                            })*/
-                            .fail (function () {
+                            method: _options.imageDeleteMethod,
+                            url: _options.imageDeleteURL,
+                            data: $.extend(true, _options.imageDeleteParams, {src: src})
+                        })
+                        /*.done (function (data) {
+                         if ($.type(data) === 'string') {
+                         data = $.parseJSON(data);
+                         }
+                         if (data.error) {
+                         console.log('error:' + data.error);
+                         } else {
+                         console.log('success:' + data.success);
+                         }
+                         })*/
+                            .fail(function () {
                                 $.fn.mbHelpers.showMessage('error', 'Image delete problem');
                             });
                     }

@@ -144,7 +144,7 @@ $.FroalaEditor.LANGUAGE['vi'] = {
         "Insert Horizontal Line": "Chèn đường gạch ngang",
 
         // Clear formatting
-        "Clear Formatting": "Định dạng Ô",
+        "Clear Formatting": "Xóa định dạng",
 
         // Undo, redo
         "Undo": "Undo",
