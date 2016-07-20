@@ -34,10 +34,12 @@
                 preload: true,
                 render: {
                     option: function (item, escape) {
+                        var name = item[_this.options.nameField] ?
+                        '<span class="user_group text-warning"> (' + escape(item[_this.options.nameField]) + ')</span>' : '';
                         return '<div>' +
                             '<span class="title">' +
                             '<span class="user_name"><i class="fa fa-user"></i> ' + escape(item[_this.options.usernameField]) + '</span>' +
-                            '<span class="user_group text-warning"> (' + escape(item[_this.options.nameField]) + ')</span>' +
+                            name +
                             '</span>' +
                             '<ul class="meta">' +
                             '<li>' + escape(item[_this.options.groupnameField]) + '</li>' +
@@ -52,7 +54,7 @@
                     }
                     if (!query.length) return callback();
                     $.ajax({
-                        url:  _this.options.url.replace('__QUERY__', encodeURIComponent(query)),
+                        url: _this.options.url.replace('__QUERY__', encodeURIComponent(query)),
                         type: 'GET',
                         error: function () {
                             callback();
