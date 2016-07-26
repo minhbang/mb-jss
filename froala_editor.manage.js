@@ -16,7 +16,7 @@
             'align', 'outdent', 'indent', 'formatOL', 'formatUL'
         ]),
         pluginsSM = ['align', 'lists'],
-        tagsSM = tagsXS.concat(['sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br']),
+        tagsSM = tagsXS.concat(['sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br', 'span']),
         attrsSM = ['style'],
 
     //MD
