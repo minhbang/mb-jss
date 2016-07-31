@@ -10,6 +10,7 @@
             var defaults = {
                 persist: false,
                 create: false,
+                plugins: ['remove_button'],
                 render: {
                     option: function (data, escape) {
                         var first = data.first || false;
