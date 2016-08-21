@@ -5,6 +5,7 @@
     'use strict';
     var defaults = {
         wrapper: 'select-btngroup',
+        ajax: true,
         dataTable: null
     };
 
@@ -40,6 +41,9 @@
     function SelectBtnGroup(element, options) {
         this.element = $(element);
         this.options = $.extend(true, defaults, options);
+        if (this.element.data('ajax') !== undefined) {
+            this.options.ajax = this.element.data('ajax');
+        }
         this.init();
     }
 
@@ -49,26 +53,28 @@
             that.element.hide();
             var btngroup = $(htmlBtnGroup(that.element, that.options.wrapper));
             that.element.after(btngroup);
-            btngroup.find('a').click(function (e) {
-                e.preventDefault();
-                var current = btngroup.find('li:hidden');
-                var current_type = current.find('a').data('type');
-                var new_type = $(this).data('type');
-                btngroup.find('button').removeClass('btn-' + current_type).addClass('btn-' + new_type);
-                btngroup.find('.select-btngroup-button').text($(this).text());
-                current.removeClass('hidden');
-                $(this).parent().addClass('hidden');
-                that.element.val($(this).data('value'));
-                var url = $(this).attr('href');
-                if (url !== '#') {
-                    $.post(url, {_token: window.csrf_token}, function (data) {
-                        $.fn.mbHelpers.showMessage(data.type, data.content);
-                        if (that.options.dataTable) {
-                            that.options.dataTable.dataTable().fnReloadAjax();
-                        }
-                    }, 'json');
-                }
-            });
+            if (that.options.ajax) {
+                btngroup.find('a').click(function (e) {
+                    e.preventDefault();
+                    var current = btngroup.find('li:hidden');
+                    var current_type = current.find('a').data('type');
+                    var new_type = $(this).data('type');
+                    btngroup.find('button').removeClass('btn-' + current_type).addClass('btn-' + new_type);
+                    btngroup.find('.select-btngroup-button').text($(this).text());
+                    current.removeClass('hidden');
+                    $(this).parent().addClass('hidden');
+                    that.element.val($(this).data('value'));
+                    var url = $(this).attr('href');
+                    if (url !== '#') {
+                        $.post(url, {_token: window.csrf_token}, function (data) {
+                            $.fn.mbHelpers.showMessage(data.type, data.content);
+                            if (that.options.dataTable) {
+                                that.options.dataTable.dataTable().fnReloadAjax();
+                            }
+                        }, 'json');
+                    }
+                });
+            }
         }
     };
 
