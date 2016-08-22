@@ -25,8 +25,9 @@
             } else {
                 var value = $(this).attr('value'),
                     url = data.url || '#',
+                    badge = data.badge ? ' <span class="badge">' + data.badge + '</span>' : '',
                     item_class = value !== selected.val() ? '' : ' class="hidden"';
-                html += '<li' + item_class + '><a href="' + url + '" data-type="' + type + '" data-value="' + value + '">' + text + '</a></li>';
+                html += '<li' + item_class + '><a href="' + url + '" data-type="' + type + '" data-value="' + value + '">' + text + badge + '</a></li>';
             }
         });
         return '<div class="' + wrapper + '"><div class="btn-group btn-group-' + size + '">\
