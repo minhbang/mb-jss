@@ -5,7 +5,7 @@
     'use strict';
     var defaults = {
         wrapper: 'select-btngroup',
-        ajax: true,
+        toggle: 'btngroup_ajax', // link: dropdown menu bình thường, ajax: post link trong datatable, select: dùng trong form
         dataTable: null
     };
 
@@ -42,8 +42,8 @@
     function SelectBtnGroup(element, options) {
         this.element = $(element);
         this.options = $.extend(true, defaults, options);
-        if (this.element.data('ajax') !== undefined) {
-            this.options.ajax = this.element.data('ajax');
+        if (this.element.data('toggle') !== undefined) {
+            this.options.toggle = this.element.data('toggle');
         }
         this.init();
     }
@@ -54,7 +54,7 @@
             that.element.hide();
             var btngroup = $(htmlBtnGroup(that.element, that.options.wrapper));
             that.element.after(btngroup);
-            if (that.options.ajax) {
+            if (that.options.toggle !== 'btngroup_link') {
                 btngroup.find('a').click(function (e) {
                     e.preventDefault();
                     var current = btngroup.find('li:hidden');
@@ -66,7 +66,7 @@
                     $(this).parent().addClass('hidden');
                     that.element.val($(this).data('value'));
                     var url = $(this).attr('href');
-                    if (url !== '#') {
+                    if (that.options.toggle === 'btngroup_ajax' && url !== '#') {
                         $.post(url, {_token: window.csrf_token}, function (data) {
                             $.fn.mbHelpers.showMessage(data.type, data.content);
                             if (that.options.dataTable) {
