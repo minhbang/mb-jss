@@ -97,6 +97,14 @@
                         }
                     });
                 });
+                that.dd.on('click', '.post-link', function (e) {
+                    e.preventDefault();
+                    $(this).tooltip('hide');
+                    $.post($(this).attr('href'), {_token: that.options.csrf_token}, function (message) {
+                        $.fn.mbHelpers.showMessage(message.type, message.content);
+                        that.reload();
+                    }, 'json');
+                });
                 enableBootstrap(that.dd);
             }
         },
