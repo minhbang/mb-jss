@@ -14,15 +14,15 @@
         attribute: 'attribute',
         elementTemplate: default_element,
         elementClass: null,
-        dataTable: null,
-        updateParams: {_token: window.csrf_token},
-        updateSuccess: function (e, data, oTable, processResult, new_val) {
+        dataTableApi: null,
+        updateParams: {_token: window.Laravel.csrfToken},
+        updateSuccess: function (e, data, oTableApi, processResult, new_val) {
             if (data.type == 'success') {
                 if (processResult) {
                     processResult(e, data.result || null, new_val);
                 }
-                if (oTable) {
-                    oTable.dataTable().fnReloadAjax();
+                if (oTableApi) {
+                    oTableApi.ajax.reload();
                 }
             }
             $.fn.mbHelpers.showMessage(data.type, data.message);
@@ -127,7 +127,7 @@
                     $.post(url + '?' + params, that.options.updateParams, function (data) {
                         that.hideAll();
                         if (that.options.updateSuccess) {
-                            that.options.updateSuccess(that.element, data, that.options.dataTable, that.options.processResult, new_val);
+                            that.options.updateSuccess(that.element, data, that.options.dataTableApi, that.options.processResult, new_val);
                         }
                     }, 'json');
                 } else {

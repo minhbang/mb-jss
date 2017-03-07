@@ -2,20 +2,23 @@
  * mbHelpers
  * @author: Minh Bang <contact@minhbang.com>
  */
-(function ($) {
+(function ($, window) {
     $.fn.mbHelpers = {
         showMessage: function (type, message, options) {
-            var defaults = {
-                text: message,
-                buttons: {sticker: false},
-                animate_speed: "fast",
-                delay: 4000
-            };
-            options = $.extend(defaults, options);
-            if (type !== 'warning') {
-                options.type = type;
+            options = options || {};
+            switch (type) {
+                case 'success':
+                    window.toastr.success(message, null, options);
+                    break;
+                case 'info':
+                    window.toastr.info(message, null, options);
+                    break;
+                case 'warning':
+                    window.toastr.warning(message, null, options);
+                    break;
+                default:
+                    window.toastr.error(message, null, options);
             }
-            return new window.PNotify(options);
         },
         updateTable: function (data, table_selector, row_template, empty_selector) {
             var table = $(table_selector);
@@ -159,4 +162,4 @@
         e.preventDefault();
         $.fn.mbHelpers.showModal($(this));
     });
-})(jQuery);
+})(jQuery, window);
