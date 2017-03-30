@@ -7,7 +7,7 @@
     'use strict';
     var defaults = {
             url: null,
-            token: window.csrf_token,
+            token: window.Laravel.csrfToken,
             containment: "parent",
             loading: null
         },
@@ -61,8 +61,8 @@
                     var newOrder = getOrder(_this.tbody);
                     if (newOrder != this.order) {
                         toggleLoading(_this.options.loading);
-                        var row_id = ui.item.context.id,
-                            row = $('#' + row_id, _this.element),
+                        var row = ui.item,
+                            row_id = $(row).attr('id'),
                             prev = row.prev('tbody tr'),
                             next = row.next('tbody tr'),
                             params = {
@@ -81,7 +81,7 @@
                 containment: this.options.containment,
                 cursor: "move",
                 axis: "y",
-            }).disableSelection();
+            });
         }
     };
 
