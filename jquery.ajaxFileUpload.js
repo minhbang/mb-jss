@@ -16,7 +16,8 @@
             unable_upload: 'Lỗi: không thể upload file'
         },
         csrf_token: window.Laravel.csrfToken,
-        datatableApi: null
+        datatableApi: null,
+        success: null
     };
 
     function checkFormData(message) {
@@ -99,11 +100,17 @@
                         if (response.status == 200) {
                             if (response.responseJSON != undefined) {
                                 let data = response.responseJSON;
-                                $.fn.mbHelpers.showMessage(data.type, data.content);
                                 if (data.type == 'success') {
                                     if (_this.options.datatableApi) {
                                         _this.options.datatableApi.ajax.reload();
                                     }
+                                    if (_this.options.success) {
+                                        _this.options.success(data.file);
+                                    } else{
+                                        $.fn.mbHelpers.showMessage(data.type, data.content);
+                                    }
+                                } else{
+                                    $.fn.mbHelpers.showMessage(data.type, data.content);
                                 }
                             } else {
                                 $.fn.mbHelpers.showMessage('error', _this.options.trans.unable_upload);
