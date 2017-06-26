@@ -6,7 +6,7 @@
     var defaults = {
         wrapper: 'select-btngroup',
         toggle: 'btngroup_ajax', // link: dropdown menu bình thường, ajax: post link trong datatable, select: dùng trong form
-        dataTable: null
+        dataTableApi: null
     };
 
     function htmlBtnGroup(select, wrapper) {
@@ -67,10 +67,10 @@
                     that.element.val($(this).data('value'));
                     var url = $(this).attr('href');
                     if (that.options.toggle === 'btngroup_ajax' && url !== '#') {
-                        $.post(url, {_token: window.csrf_token}, function (data) {
+                        $.post(url, {_token: window.Laravel.csrfToken}, function (data) {
                             $.fn.mbHelpers.showMessage(data.type, data.content);
-                            if (that.options.dataTable) {
-                                that.options.dataTable.dataTable().fnReloadAjax();
+                            if (that.options.dataTableApi) {
+                                that.options.dataTableApi.ajax.reload();
                             }
                         }, 'json');
                     }
