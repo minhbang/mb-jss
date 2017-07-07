@@ -54,6 +54,13 @@
                 htmlAllowedAttrs: attrsSM,
                 imagePaste: false
             },
+            simple_html: {
+                pluginsEnabled: pluginsSM.concat(['codeView', 'codeBeautifier']),
+                toolbarButtons: toolbarSM.concat(['html']),
+                toolbarButtonsMD: toolbarSM.concat(['html']),
+                toolbarButtonsSM: toolbarSM.concat(['html']),
+                imagePaste: false
+            },
             basic_no_image: {
                 pluginsEnabled: pluginsMD,
                 toolbarButtons: toolbarMD,

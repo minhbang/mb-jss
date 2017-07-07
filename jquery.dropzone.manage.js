@@ -26,7 +26,7 @@
  * },
  */
 ;
-(function ($) {
+(function ($, window) {
     'use strict';
     var defaults = {
         manageMode: false,
@@ -38,7 +38,7 @@
         url_update: "/backend/image/__ID__/quick_update",
         thumb_width: 480,
         thumb_height: 360,
-        token: window["csrf_token"],
+        token: window.Laravel.csrfToken,
         images: [],
         trans: {
             title: "Tiêu đề",
@@ -546,5 +546,4 @@
 
         return retval || lists;
     };
-})
-(jQuery);
+})(jQuery, window);
