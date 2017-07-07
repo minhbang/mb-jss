@@ -25,15 +25,15 @@
 
     MbDatatables.prototype = {
         init: function () {
-            let _element = this.element;
-            let _tableApi = this.table;
-            let _url = this.url;
-            let _options = this.options;
+            var _element = this.element;
+            var _tableApi = this.table;
+            var _url = this.url;
+            var _options = this.options;
             this.element.on('draw.dt', function () {
                 _element.find('[data-toggle=tooltip]').tooltip({'container': 'body'});
                 _element.find('a.delete-link').click(function (e) {
                     e.preventDefault();
-                    let data = $(this).data(),
+                    var data = $(this).data(),
                         url = $(this).attr('href'),
                         message = '';
                     if (_options.delete_confirm) {
@@ -88,10 +88,10 @@
             });
 
             // Advanced filter
-            let _ibox = this.element.closest('.ibox');
-            let _advanced_filter = $('.dataTables_advanced_filter', _ibox);
-            let _buttons = $('.ibox-title .buttons', _ibox);
-            let _form = $('form', _advanced_filter);
+            var _ibox = this.element.closest('.ibox');
+            var _advanced_filter = $('.dataTables_advanced_filter', _ibox);
+            var _buttons = $('.ibox-title .buttons', _ibox);
+            var _form = $('form', _advanced_filter);
             if (_advanced_filter.length) {
                 $('.advanced_filter_collapse', _buttons).click(function (e) {
                     e.preventDefault();
@@ -111,10 +111,10 @@
         }
     };
     $.fn.mbDatatables = function (params) {
-        let lists = this,
+        var lists = this,
             retval = this;
         lists.each(function () {
-            let plugin = $(this).data("mbDatatables");
+            var plugin = $(this).data("mbDatatables");
 
             if (!plugin) {
                 $(this).data("mbDatatables", new MbDatatables(this, params));

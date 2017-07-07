@@ -4,7 +4,7 @@
  */
 ;(function ($, window) {
     'use strict';
-    var defaults = {
+    const defaults = {
         url_store: null,
         url_update: null,
         add_new_button: '.add-new',
@@ -21,7 +21,7 @@
     };
 
     function checkFormData(message) {
-        let supported = !!window.FormData;
+        var supported = !!window.FormData;
         if (!supported) {
             $.fn.mbHelpers.showMessage('error', message, {"positionClass": "toast-top-center"});
         }
@@ -45,7 +45,7 @@
 
     AjaxFileUpload.prototype = {
         init: function () {
-            let _this = this;
+            var _this = this;
             $(_this.options.add_new_button).click(function (e) {
                 e.preventDefault();
                 _this.showNew();
@@ -65,7 +65,7 @@
             });
             _this.element.submit(function (e) {
                 e.preventDefault();
-                let formdata = new FormData(this);
+                var formdata = new FormData(this);
                 formdata.append('_token', _this.options.csrf_token);
                 _this.xhr = $.ajax({
                     url: $(this).attr('action'),
@@ -82,7 +82,7 @@
                             // For handling the progress of the upload
                             myXhr.upload.addEventListener('progress', function (e) {
                                 if (e.lengthComputable) {
-                                    let percentComplete = (e.loaded / e.total) * 100;
+                                    var percentComplete = (e.loaded / e.total) * 100;
                                     _this.progress_bar.width(percentComplete + '%');
                                     _this.percent.html(percentComplete + '%');
                                 }
@@ -99,7 +99,7 @@
                     complete: function (response) {
                         if (response.status == 200) {
                             if (response.responseJSON != undefined) {
-                                let data = response.responseJSON;
+                                var data = response.responseJSON;
                                 if (data.type == 'success') {
                                     if (_this.options.datatableApi) {
                                         _this.options.datatableApi.ajax.reload();
@@ -163,10 +163,10 @@
     };
 
     $.fn.ajaxFileUpload = function (options) {
-        let lists = this,
+        var lists = this,
             retval = this;
         lists.each(function () {
-            let plugin = $(this).data("ajaxFileUpload");
+            var plugin = $(this).data("ajaxFileUpload");
             if (!plugin) {
                 $(this).data("ajaxFileUpload", new AjaxFileUpload(this, options));
             } else {

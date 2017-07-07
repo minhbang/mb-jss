@@ -92,15 +92,15 @@
             height: 300,
             language: 'vi',
             charCounterCount: false,
-            imageUploadParams: {_token: window.csrf_token},
+            imageUploadParams: {_token: window.Laravel.csrfToken},
             imageDefaultWidth: 600,
-            imageManagerPreloader: '/build/img/loading.gif',
+            imageManagerPreloader: '/images/loading.gif',
             imageManagerPageSize: 12,
             imageManagerDeleteURL: false,
             // custom options
             imageDeleteURL: null,
             imageDeleteMethod: 'POST',
-            imageDeleteParams: {_token: window.csrf_token}
+            imageDeleteParams: {_token: window.Laravel.csrfToken}
         };
 
     function MbEditor(element, options) {

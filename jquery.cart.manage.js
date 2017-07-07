@@ -2,12 +2,12 @@
  * Quản lý Cart
  */
 ;
-(function ($) {
+(function ($, window) {
     'use strict';
     var defaults = {
         wishlist_count_url: '/wishlist/count',
         update_quantity_url: '/cart/quantity/__ID__',
-        token: window.csrf_token,
+        token: window.Laravel.csrfToken,
         trans: {
             "cart.add": "Chọn mua",
             "cart.add.success": "Thêm vào giỏ hàng thành công",
@@ -226,4 +226,4 @@
 
         return retval || lists;
     };
-})(jQuery);
+})(jQuery, window);
