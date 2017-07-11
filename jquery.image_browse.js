@@ -27,8 +27,10 @@
             last: "Cuối"
         },
         cell_grid: "col-sm-3 col-xs-4",
+        multiSelect: false,
         onSuccess: null,
-        onDeleted: null
+        onDeleted: null,
+        change: null
     };
 
     function ImageBrowser(element, options) {
@@ -39,14 +41,28 @@
 
     ImageBrowser.prototype = {
         init: function () {
-            this.initialized = false;
-            this.page = null;
-            this.image_list = $('<div class="row image-list">');
-            this.pagination = $('<ul class="pagination-sm">');
-            this.element.append($('<div class="image-pagination">').append(this.pagination)).append(this.image_list);
-            this.load(this.options.page);
-            this.image_list.on('click', '.image', function () {
-                $(this).toggleClass('selected');
+            var _this = this;
+            _this.initialized = false;
+            _this.page = null;
+            _this.image_list = $('<div class="row image-list">');
+            _this.pagination = $('<ul class="pagination-sm">');
+            _this.element.append($('<div class="image-pagination">').append(_this.pagination)).append(_this.image_list);
+            _this.load(_this.options.page);
+            _this.image_list.on('click', '.image', function () {
+                if(_this.options.multiSelect){
+                    $(this).toggleClass('selected');
+                } else{
+                    _this.image_list.find('.image').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+                if(_this.options.change){
+                    _this.options.change(_this);
+                }
+            });
+        },
+        selected: function() {
+            return $.map(this.image_list.find('.image.selected'), function(item) {
+                return $(item).data('image');
             });
         },
         load: function (page) {
@@ -86,19 +102,15 @@
         },
         add: function (image) {
             var cell = $('<div class="' + this.options.cell_grid + '">'),
-                item = $('<div class="image">'),
+                item = $('<div class="image">').data('image', image),
                 img = $('<img />').attr('src', image["thumb"]),
                 title = $('<div class="title">').html(image["title"]),
-                selected_mark = $('<div class="selected-mark">')
-                    .append($('<span class="fa fa-check">'))
-                    .append($('<div class="bg">'));
+                selected_mark = $('<div class="selected-mark">').append($('<span class="fa fa-check">')).append($('<div class="bg">'));
             item.append(img).append(selected_mark);
             if (image["title"]) {
-                title.html(image["title"]);
                 item.append(title);
             }
             this.image_list.append(cell.append(item));
-            item.data('image', image);
         }
     };
 
@@ -107,7 +119,6 @@
             retval = this;
         lists.each(function () {
             var plugin = $(this).data("imageBrowser");
-
             if (!plugin) {
                 $(this).data("imageBrowser", new ImageBrowser(this, options));
             } else {

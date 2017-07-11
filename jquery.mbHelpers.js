@@ -4,6 +4,8 @@
  */
 (function ($, window) {
     $.fn.mbHelpers = {
+        reloadPage: null,
+        imageBrowserChange: null,
         showMessage: function (type, message, options) {
             options = options || {};
             switch (type) {
@@ -47,18 +49,74 @@
             }
         },
         /**
+         * Tham số
+         * - src: url trang nội dung modal => src của frame
+         * - container: 'this' | 'parent', mặc định 'this' trong cùng cửa sổ, 'parent': trong cửa sổ cha (button trong modal content)
+         * - id: id của iframe tag
+         * - title: tiêu đề modal
+         * - icon: icon phía trước tiêu đề
+         * - width: null | 'large' | 'small', chiều rộng modal bootstrap
+         * - height: chiều cao iframe, px
+         * - className: thêm css class vào modal wrapper
+         * - buttons: các buttons, tham số theo bootbox, các callback của button sẻ tự động disable khi button có class 'disabled'
+         *
+         * Trả về: Jquery obj kết quả của bootbox.dialog()
+         */
+        showBootbox: function(options) {
+            const defaults = {
+                src: null,
+                container: 'this',
+                id: 'bootbox-iframe',
+                title: null,
+                icon: null,
+                width: null,
+                height: "auto",
+                className: null,
+                buttons: {
+                    confirm: {
+                        label: "Ok",
+                        className: "btn-success disabled"
+                    },
+                    cancel: {
+                        label: "Cancel",
+                        className: "btn-white"
+                    },
+                }
+            };
+            var _options = $.extend(true, defaults, options);
+            var _container = _options.container === 'this' ? window : window.parent;
+            var _buttons = $.extend(true, {}, _options.buttons);;
+            $.each(_buttons, function(name, button) {
+                _buttons[name].callback = function(e) {
+                    if($(e.target).hasClass('disabled')){
+                        return false;
+                    } else if($.isFunction(_options.buttons[name].callback)){
+                        return _options.buttons[name].callback.call(this, e);
+                    }
+                }
+            });
+            return _container.bootbox.dialog({
+                title: (_options.icon ? '<i class="fa fa-'+_options.icon+'"></i> ':'') +_options.title,
+                message: '<iframe id="'+_options.id+'" width="100%" height="'+_options.height+'" src="'+_options.src+'" frameborder="0"></iframe>',
+                size: _options.width,
+                className: _options.className,
+                buttons: _buttons,
+                onEscape: true
+            });
+        },
+        /**
          * Show modal, tham số cung cấp qua tag <a>
-         * vd: <a class="modal-link" data-target="#mbModal" data-title="Test modla" data-icon="floppy-disk" data-label="OK" href="/index.html">Show</a>
+         * vd: <a class="modal-link" data-title="Test modla" data-icon="floppy-disk" data-label="OK" href="/index.html">Show</a>
          * Tham số gồm:
-         * - href: link đến trang nội dung modal
-         * - data-target: modal selector, bỏ qua -> mặc định #mbModal
+         * - href: link đến trang nội dung modal => src của frame
+         * - data-container: 'this' | 'parent', mặc định 'this' trong cùng cửa sổ, 'parent': trong cửa sổ cha (button trong modal content)
          * - data-title: tiêu đề modal
          * - data-icon: icon phía trước tiêu đề
-         * - data-label: label của nút submit, bỏ qua => ẩn nút
+         * - data-width: chiều rộng iframe, px
          * - data-height: chiều cao iframe, px
-         * - data-width: ['large', 'small'] chiều rộng modal, bỏ qua -> chiều rộng mặc định
-         * - data-reload: bool Sau khi đóng modal sẽ reload lại datatables
-         * - data-callback: bool Nút submit sẽ gọi hàm modal_callback() thay vì submit form
+         * - data-submit: label của nút submit, bỏ qua => ẩn nút
+         * - data-callback: khi submit sẽ gọi hàm window[<callback>] thay vì submit form
+         * Trả về: Jquery obj kết quả của bootbox.dialog()
          */
         showModal: function (el) {
             var dialog_class = {'large': 'modal-lg', 'small': 'modal-sm'};
