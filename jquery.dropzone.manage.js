@@ -409,7 +409,8 @@
                 // callback for image browser
                 window.modal_callback = function () {
                     //Find the iframe in the current document
-                    var doc = $('#mbModal iframe').contents()[0];
+                    var doc = window.$.fn.mbHelpers.getParentIframe().contents()[0];
+                    //var doc = $('#mbModal iframe').contents()[0];
                     //Get the iframe's window context
                     var modalWindow = 'defaultView' in doc ? doc.defaultView : doc.parentWindow;
                     modalWindow.$('selector').data('key');
