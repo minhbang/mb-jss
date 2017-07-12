@@ -11,7 +11,7 @@
         ],
         tagsXS = ['p', 'b', 'strong', 'i', 'em', 'u'],
 
-    //SM
+        //SM
         toolbarSM = toolbarXS.concat(['strikeThrough', 'subscript', 'superscript', '|',
             'align', 'outdent', 'indent', 'formatOL', 'formatUL'
         ]),
@@ -19,7 +19,7 @@
         tagsSM = tagsXS.concat(['sub', 'sup', 'strike', 'ol', 'ul', 'li', 'br', 'span']),
         attrsSM = ['style'],
 
-    //MD
+        //MD
         toolbarMD = toolbarSM.concat([
             '|', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'clearFormatting', '|',
             'insertLink', 'insertImage', 'insertTable', 'insertHR', 'fullscreen'
@@ -28,7 +28,7 @@
         tagsMD = tagsSM.concat(['hr', 'table', 'tbody', 'tr', 'td', 'th', 'a']),
         attrsMD = attrsSM.concat(['class', 'colspan', 'rowspan', 'href', 'target', 'title', 'alt']),
 
-    //FULL
+        //FULL
         toolbarFULL = toolbarSM.concat([
             '|', 'fontFamily', 'fontSize', 'color', 'paragraphFormat', 'paragraphStyle', 'inlineStyle', 'clearFormatting', '|',
             'insertLink', 'insertImage', 'insertVideo', 'insertTable', 'insertHR', 'insertFile', '|',
@@ -80,7 +80,7 @@
             },
             full: {
                 toolbarButtons: toolbarFULL,
-                toolbarButtonsMD: toolbarMD,
+                toolbarButtonsMD: toolbarFULL,
                 toolbarButtonsSM: toolbarSM
             }
         },
@@ -94,13 +94,21 @@
             charCounterCount: false,
             imageUploadParams: {_token: window.Laravel.csrfToken},
             imageDefaultWidth: 600,
-            imageManagerPreloader: '/images/loading.gif',
-            imageManagerPageSize: 12,
-            imageManagerDeleteURL: false,
             // custom options
             imageDeleteURL: null,
             imageDeleteMethod: 'POST',
-            imageDeleteParams: {_token: window.Laravel.csrfToken}
+            imageDeleteParams: {_token: window.Laravel.csrfToken},
+            // Custom buttons
+            mbButtons: {
+                insertImages: {
+                    url: false,
+                    label: 'Insert Images',
+                    icon: 'image',
+                    width: 'large',
+                    type: 'info',
+                    callback: 'cmdInsertImages'
+                }
+            }
         };
 
     function MbEditor(element, options) {
@@ -114,6 +122,7 @@
             options['height'] = this.element.data('height');
         }
         this.options = $.extend(true, defaults, editors[editor], options);
+        this.buttonCallbacks = {};
         this.init();
     }
 
@@ -121,8 +130,39 @@
         init: function () {
             var _element = this.element,
                 _options = this.options;
+            _element.closest('.form-group').addClass('mbEditor');
+            if (_options.mbButtons) {
+                var _buttons = $('<div class="mbEditor-buttons">');
+                $.each(_options.mbButtons, function (name, buttton) {
+                    if (buttton !== false && buttton.url) {
+                        var btn = $('<a>')
+                            .attr('class', 'modal-link btn btn-sm btn-' + (buttton.type || 'white'))
+                            .attr('href', buttton.url)
+                            .attr('data-name', name)
+                            .append((buttton.icon ? '<i class="fa fa-' + buttton.icon + '"></i> ' : '') + buttton.label);
+                        buttton.title = buttton.title || buttton.label;
+                        $.fn.mbHelpers.setData(btn, buttton, ['url']);
+                        _buttons.append(btn);
+                        if (name === 'insertImages') {
+                            window.selectedImages = {};
+                            $.fn.mbHelpers.imageBrowserChange = function (images) {
+                                window.selectedImages = images;
+                            }
+                            if (!window[buttton.callback]) {
+                                window[buttton.callback] = function () {
+                                    $.each(window.selectedImages, function (i, image) {
+                                        _element.froalaEditor('html.insert', '<img src="' + image.url + '"  data-id="' + image.id + '" />');
+                                    });
+                                };
+                            }
+                        }
+                    }
+                });
+                _element.before(_buttons);
+            }
+            delete _options.mbButtons;
             _element.froalaEditor(_options)
-                .on('froalaEditor.commands.after', function (e, editor, cmd, param1, param2) {
+                /*.on('froalaEditor.commands.after', function (e, editor, cmd, param1, param2) {
                     console.log(param1);
                     console.log(param2);
                     switch (cmd) {
@@ -133,36 +173,23 @@
                         default:
                             console.log(cmd);
                     }
-                })
-                .on('froalaEditor.imageManager.error', function (e, editor, error, response) {
-                    console.log(response);
-                    $.fn.mbHelpers.showMessage('error', error.message);
-                })
+                })*/
                 .on('froalaEditor.image.error', function (e, editor, error) {
                     $.fn.mbHelpers.showMessage('error', error.message);
                 })
                 .on('froalaEditor.image.removed', function (e, editor, $img) {
-                    var html = _element.froalaEditor('html.get', true),
-                        src = $($img).attr('src');
-                    if (html.indexOf(src) === -1) {
-                        $.ajax({
-                            method: _options.imageDeleteMethod,
-                            url: _options.imageDeleteURL,
-                            data: $.extend(true, _options.imageDeleteParams, {src: src})
-                        })
-                        /*.done (function (data) {
-                         if ($.type(data) === 'string') {
-                         data = $.parseJSON(data);
-                         }
-                         if (data.error) {
-                         console.log('error:' + data.error);
-                         } else {
-                         console.log('success:' + data.success);
-                         }
-                         })*/
-                            .fail(function () {
+                    if (_options.imageDeleteURL) {
+                        var html = _element.froalaEditor('html.get', true),
+                            src = $($img).attr('src');
+                        if (html.indexOf(src) === -1) {
+                            $.ajax({
+                                method: _options.imageDeleteMethod,
+                                url: _options.imageDeleteURL,
+                                data: $.extend(true, _options.imageDeleteParams, {src: src})
+                            }).fail(function () {
                                 $.fn.mbHelpers.showMessage('error', 'Image delete problem');
                             });
+                        }
                     }
                 });
         }
