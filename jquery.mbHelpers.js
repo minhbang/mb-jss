@@ -73,7 +73,7 @@
                 buttons: {
                     confirm: {
                         label: "Ok",
-                        className: "btn-success disabled"
+                        className: "btn-success"
                     },
                     cancel: {
                         label: "Cancel",
