@@ -61,7 +61,7 @@
          *
          * Trả về: Jquery obj kết quả của bootbox.dialog()
          */
-        showBootbox: function(options) {
+        showBootbox: function (options) {
             const defaults = {
                 src: null,
                 container: 'this',
@@ -83,23 +83,24 @@
             };
             var _options = $.extend(true, defaults, options);
             var _container = _options.container === 'this' ? window : window.parent;
-            var _buttons = $.extend(true, {}, _options.buttons);;
-            $.each(_buttons, function(name, button) {
-                if(button === false){
+            var _buttons = $.extend(true, {}, _options.buttons);
+            ;
+            $.each(_buttons, function (name, button) {
+                if (button === false) {
                     delete _buttons[name];
                 } else {
-                    _buttons[name].callback = function(e) {
-                        if($(e.target).hasClass('disabled')){
+                    _buttons[name].callback = function (e) {
+                        if ($(e.target).hasClass('disabled')) {
                             return false;
-                        } else if($.isFunction(_options.buttons[name].callback)){
+                        } else if ($.isFunction(_options.buttons[name].callback)) {
                             return _options.buttons[name].callback.call(this, e);
                         }
                     }
                 }
             });
             return _container.bootbox.dialog({
-                title: (_options.icon ? '<i class="fa fa-'+_options.icon+'"></i> ':'') +_options.title,
-                message: '<iframe width="100%" height="'+_options.height+'" src="'+_options.src+'" frameborder="0"></iframe>',
+                title: (_options.icon ? '<i class="fa fa-' + _options.icon + '"></i> ' : '') + _options.title,
+                message: '<iframe width="100%" height="' + _options.height + '" src="' + _options.src + '" frameborder="0"></iframe>',
                 size: _options.width,
                 className: _options.className,
                 buttons: _buttons,
@@ -118,7 +119,7 @@
         showModal: function (element) {
             var options = $(element).data();
             options.src = $(element).attr('href');
-            if(options.label){
+            if (options.label) {
                 options.buttons = {
                     confirm: {
                         label: options.label,
@@ -128,15 +129,15 @@
                         label: window.trans.cancel
                     }
                 }
-                if(options.callback){
+                if (options.callback) {
                     options.buttons.confirm.callback = window[options.callback] ? window[options.callback] : null
-                } else{
-                    options.buttons.confirm.callback = function() {
+                } else {
+                    options.buttons.confirm.callback = function () {
                         $('form', $('iframe', this).contents()).submit();
                         return false;
                     }
                 }
-            } else{
+            } else {
                 options.buttons = {
                     confirm: {
                         label: window.trans.close,
@@ -149,8 +150,8 @@
         },
         showModalMessage: function (title, message, icon, type, size) {
             return window.bootbox.dialog({
-                title: (icon ? '<i class="fa fa-'+icon+'"></i> ':'') +title,
-                message: '<h4 class="text-center'+(type ? ' text-'+type:'')+'">'+message+'</h4>',
+                title: (icon ? '<i class="fa fa-' + icon + '"></i> ' : '') + title,
+                message: '<h4 class="text-center' + (type ? ' text-' + type : '') + '">' + message + '</h4>',
                 size: size,
                 buttons: {
                     confirm: {
@@ -163,26 +164,42 @@
         },
         updateModalHeight: function () {
             var iframe = this.getParentIframe();
-            if(iframe){
+            if (iframe) {
                 $(iframe).height($(document).height());
             }
         },
-        getParentIframe: function(container, win) {
+        getParentIframe: function (container, win) {
             container = container || window.parent;
             win = win || window;
-            var result;
-            $.each(container.$('iframe'), function(i, iframe) {
-                if($(iframe.contentWindow).is($(win))){
+            var result = null;
+            $.each(container.$('iframe'), function (i, iframe) {
+                if ($(iframe.contentWindow).is($(win))) {
                     result = iframe;
                 }
             });
             return result;
         },
-        getParentModal: function(container, win){
+        getParentModal: function (container, win) {
             var iframe = this.getParentIframe(container, win);
-            if(iframe){
+            if (iframe) {
                 return $(iframe).closest('.modal');
             }
+        },
+        setData: function (element, data, except) {
+            except = except || [];
+            $.each(data, function (key, value) {
+                if (except.indexOf(key) === -1) {
+                    $(element).attr('data-' + key, value);
+                }
+            });
+        },
+        getMaxZIndex: function () {
+            var highest = -999;
+            $("*").each(function () {
+                var current = parseInt($(this).css("z-index"), 10);
+                if (current && highest < current) highest = current;
+            });
+            return highest;
         }
     };
 
