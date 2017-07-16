@@ -106,6 +106,7 @@
                     icon: 'image',
                     width: 'large',
                     type: 'info',
+                    classname: 'modal-fullscreen',
                     callback: 'cmdInsertImages'
                 }
             }

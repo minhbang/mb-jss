@@ -69,7 +69,7 @@
                 icon: null,
                 width: null,
                 height: "auto",
-                className: null,
+                classname: null,
                 buttons: {
                     confirm: {
                         label: "Ok",
@@ -84,7 +84,6 @@
             var _options = $.extend(true, defaults, options);
             var _container = _options.container === 'this' ? window : window.parent;
             var _buttons = $.extend(true, {}, _options.buttons);
-            ;
             $.each(_buttons, function (name, button) {
                 if (button === false) {
                     delete _buttons[name];
@@ -102,7 +101,7 @@
                 title: (_options.icon ? '<i class="fa fa-' + _options.icon + '"></i> ' : '') + _options.title,
                 message: '<iframe width="100%" height="' + _options.height + '" src="' + _options.src + '" frameborder="0"></iframe>',
                 size: _options.width,
-                className: _options.className,
+                className: _options.classname,
                 buttons: _buttons,
                 onEscape: true
             });
@@ -164,7 +163,7 @@
         },
         updateModalHeight: function () {
             var iframe = this.getParentIframe();
-            if (iframe) {
+            if (iframe && !$(iframe).closest('.modal').hasClass('modal-fullscreen')) {
                 $(iframe).height($(document).height());
             }
         },
@@ -200,6 +199,15 @@
                 if (current && highest < current) highest = current;
             });
             return highest;
+        },
+        render: function (template, data, nullValue) {
+            nullValue = nullValue || '<code>null</code>'
+            var html = template;
+            $.each(data, function (attr, value) {
+
+                html = html.replace('__' + attr + '__', value === null ? nullValue : value)
+            });
+            return html;
         }
     };
 
