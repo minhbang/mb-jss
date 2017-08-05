@@ -40,6 +40,7 @@
         this.input_title = $('input[name="title"]', this.element);
         this.input_name = $('input[name="name"]', this.element);
         this.xhr = null;
+        this.method = "POST",
         this.init();
     }
 
@@ -67,6 +68,7 @@
                 e.preventDefault();
                 var formdata = new FormData(this);
                 formdata.append('_token', _this.options.csrf_token);
+                formdata.append('_method', _this.method);
                 _this.xhr = $.ajax({
                     url: $(this).attr('action'),
                     type: "POST",
@@ -134,6 +136,7 @@
                 this.input_title.prop('required', false).closest('.form-group').hide();
                 this.input_name.prop('required', true);
                 this.element.attr('action', this.options.url_update.replace('__ID__', $(element).data('id')));
+                this.method = "PUT";
                 this.show();
             }
         },
@@ -143,6 +146,7 @@
                 this.input_title.prop('required', true).closest('.form-group').show();
                 this.input_name.prop('required', true);
                 this.element.attr('action', this.options.url_store);
+                this.method = "POST";
                 this.show();
             }
         },
