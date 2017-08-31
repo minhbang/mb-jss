@@ -110,6 +110,7 @@
             }
         }
     };
+    $.fn.dataTable.ext.classes.sProcessing = "dataTables_processing";
     $.fn.mbDatatables = function (params) {
         var lists = this,
             retval = this;
